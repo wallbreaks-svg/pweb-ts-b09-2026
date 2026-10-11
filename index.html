@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id" class="guarding">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <!-- common.js harus dimuat sebelum index.js (defer menjaga urutan ini) -->
+  <script src="dist/common.js" defer></script>
+  <script src="dist/index.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Antrian RS</span>
+      </div>
+
+      <nav class="topbar-nav" aria-label="Halaman">
+        <a href="index.html" aria-current="page">Dashboard</a>
+        <a href="operator.html">Operator</a>
+        <a href="ambil-antrian.html">Ambil antrian</a>
+        <a href="layar.html">Layar antrian</a>
+      </nav>
+
+      <div class="user">
+        <span class="avatar" id="user-avatar" aria-hidden="true"></span>
+        <div class="user-text">
+          <span class="user-name" id="user-name"></span>
+          <span class="user-role" id="user-role"></span>
+        </div>
+      </div>
+      <button type="button" class="btn btn--ghost btn--small" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Dashboard Admin</h1>
+        <p class="lede">
+          Atur jenis antrian dan terbitkan tiket untuk pengunjung yang tidak bisa mengambil nomor sendiri.
+        </p>
+      </div>
+      <button type="button" class="btn btn--danger" id="reset-btn">Reset Antrian</button>
+    </div>
+
+    <section class="statbar" aria-label="Ringkasan antrian">
+      <div class="stat">
+        <span class="stat-value" id="stat-waiting">0</span>
+        <span class="stat-label">Menunggu</span>
+      </div>
+      <div class="stat stat--called">
+        <span class="stat-value" id="stat-called">0</span>
+        <span class="stat-label">Sedang dipanggil</span>
+      </div>
+      <div class="stat stat--done">
+        <span class="stat-value" id="stat-done">0</span>
+        <span class="stat-label">Selesai</span>
+      </div>
+      <div class="stat stat--skipped">
+        <span class="stat-value" id="stat-skipped">0</span>
+        <span class="stat-label">Dilewati</span>
+      </div>
+    </section>
+
+    <div class="layout">
+      <section class="panel" aria-labelledby="types-title">
+        <h2 class="panel-title" id="types-title">Jenis antrian</h2>
+
+        <form class="type-form" id="type-form" novalidate>
+          <div class="field field--code">
+            <label for="type-code">Kode</label>
+            <input
+              class="control control--code"
+              type="text"
+              id="type-code"
+              maxlength="1"
+              placeholder="C"
+              autocomplete="off"
+              aria-describedby="type-error"
+            />
+          </div>
+          <div class="field">
+            <label for="type-name">Nama layanan</label>
+            <input
+              class="control"
+              type="text"
+              id="type-name"
+              maxlength="30"
+              placeholder="Contoh: Farmasi"
+              autocomplete="off"
+              aria-describedby="type-error"
+            />
+          </div>
+          <button type="submit" class="btn btn--primary">Tambah</button>
+        </form>
+        <p class="form-error" id="type-error" role="alert" hidden></p>
+
+        <ul class="type-list" id="type-list"></ul>
+      </section>
+
+      <section class="panel" aria-labelledby="issue-title">
+        <h2 class="panel-title" id="issue-title">Terbitkan tiket</h2>
+
+        <form class="issue-form" id="issue-form" novalidate>
+          <div class="field">
+            <label for="issue-type">Jenis antrian</label>
+            <select class="control" id="issue-type"></select>
+          </div>
+          <div class="field">
+            <label for="issue-priority">Prioritas</label>
+            <select class="control" id="issue-priority"></select>
+          </div>
+          <button type="submit" class="btn btn--primary">Terbitkan</button>
+        </form>
+
+        <div class="issued" id="issue-result" role="status" hidden></div>
+
+        <div class="list-head">
+          <h3>Daftar tiket</h3>
+          <select class="control" id="ticket-filter" aria-label="Tampilkan tiket">
+            <option value="active">Menunggu dan dipanggil</option>
+            <option value="all">Semua tiket</option>
+          </select>
+        </div>
+        <div id="ticket-groups"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

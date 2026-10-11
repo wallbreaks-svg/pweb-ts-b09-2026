@@ -1,0 +1,165 @@
+/* Panel Operator (operator.html). Memakai css/base.css untuk dasar. */
+
+.lane-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: 20px;
+}
+
+/* Satu jalur per jenis antrian. Garis atas berwarna sesuai kode jenisnya. */
+.lane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 20px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--dept, var(--ink));
+  border-radius: var(--r-panel);
+}
+
+.lane.is-inactive {
+  background: var(--surface-sunk);
+}
+
+.lane-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lane-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.lane-count {
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- Nomor yang sedang dipanggil dan berikutnya ---------- */
+.lane-board {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 14px;
+  min-height: 116px;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.slot--now {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface-sunk);
+}
+
+.slot--now.is-live {
+  background: var(--signal-soft);
+}
+
+.slot--next {
+  padding: 12px 0;
+}
+
+.slot-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.slot-number {
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.slot--now .slot-number {
+  color: var(--signal-deep);
+}
+
+.slot--next .slot-number {
+  font-size: 32px;
+  padding-top: 8px;
+  color: var(--ink);
+}
+
+.slot .slot-number.is-empty {
+  color: var(--line-strong);
+}
+
+.slot-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* Nomor bergetar sekali saat berganti, sebagai tanda panggilan baru. */
+.slot-number.is-fresh {
+  animation: call-in 0.5s ease-out;
+}
+
+@keyframes call-in {
+  from {
+    opacity: 0.2;
+    transform: scale(0.82);
+  }
+
+  60% {
+    transform: scale(1.06);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Tombol aksi ---------- */
+.lane-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn--call {
+  grid-column: 1 / -1;
+  min-height: 52px;
+  border-color: var(--signal);
+  background: var(--signal);
+  color: #1d1300;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.btn--call:hover:not(:disabled) {
+  background: #e29500;
+}
+
+.lane-hint {
+  min-height: 20px;
+  margin-top: -4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 420px) {
+  .slot-number {
+    font-size: 42px;
+  }
+
+  .slot--next .slot-number {
+    font-size: 28px;
+  }
+}

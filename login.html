@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk - Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <script src="dist/login.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <h1>Masuk</h1>
+      <p class="subtitle">
+        Halaman ini untuk mengakses Dashboard Admin dan Panel Operator.
+        Layar Kiosk tidak memerlukan login.
+      </p>
+
+      <div id="error-box" class="error-box" role="alert" aria-live="assertive" hidden></div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            placeholder="Masukkan username"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            placeholder="Masukkan password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn">Masuk</button>
+      </form>
+
+      <p class="hint">
+        Gunakan akun uji dari
+        <a href="https://dummyjson.com/users" target="_blank" rel="noopener noreferrer">dummyjson.com/users</a>
+        (contoh username/password tercantum di sana).
+      </p>
+
+      <nav class="public-links" aria-label="Halaman publik">
+        <a href="ambil-antrian.html">Ambil Antrian</a>
+        <a href="layar.html">Layar Antrian</a>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>

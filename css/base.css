@@ -1,0 +1,473 @@
+/* Gaya bersama untuk Dashboard Admin dan Panel Operator.
+   Halaman lain (ambil-antrian, layar) boleh memakai file ini juga. */
+
+:root {
+  --paper: #eef1f3;
+  --surface: #ffffff;
+  --surface-sunk: #f6f8f9;
+  --ink: #12202b;
+  --ink-soft: #3b4a57;
+  --muted: #5f6f7a;
+  --line: #dde3e7;
+  --line-strong: #c3ced5;
+
+  --signal: #f5a000;
+  --signal-deep: #a85f00;
+  --signal-soft: #fff3d6;
+
+  --teal: #0f766e;
+  --teal-soft: #e0f3ef;
+  --brick: #b42318;
+  --brick-soft: #fdecea;
+  --brick-line: #f3c0ba;
+  --blue: #1d4ed8;
+  --blue-soft: #e8f0ff;
+  --violet: #5b32c8;
+  --violet-soft: #efe9ff;
+
+  --font: "Inter", ui-sans-serif, "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --r-panel: 12px;
+  --r-ctl: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Halaman disembunyikan sampai auth guard selesai, supaya isinya tidak sempat berkedip. */
+html.guarding body {
+  visibility: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--ink);
+  color: #fff;
+}
+
+.topbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background:
+    linear-gradient(#fff, #fff) center / 14px 4px no-repeat,
+    linear-gradient(#fff, #fff) center / 4px 14px no-repeat,
+    var(--signal);
+}
+
+.topbar-nav {
+  display: flex;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.topbar-nav a {
+  padding: 7px 12px;
+  border-radius: var(--r-ctl);
+  color: #b7c5ce;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar-nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.topbar-nav a[aria-current="page"] {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--signal);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #9fb0bb;
+}
+
+/* ---------- Tata letak halaman ---------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.page-head h1 {
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  margin-top: 6px;
+  max-width: 58ch;
+  color: var(--muted);
+}
+
+.panel {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.panel-title {
+  margin-bottom: 14px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.empty {
+  padding: 18px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-ctl);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------- Tombol ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--surface-sunk);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.btn--primary {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #213a4d;
+}
+
+.btn--ghost {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #fff;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn--danger {
+  border-color: var(--brick-line);
+  color: var(--brick);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--brick-soft);
+}
+
+.btn--small {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+/* ---------- Form ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.control {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+  background: #fff;
+}
+
+.control:focus-visible {
+  border-color: var(--signal);
+  outline-offset: 0;
+}
+
+.control.is-invalid {
+  border-color: var(--brick);
+}
+
+.form-error {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--brick-line);
+  border-radius: var(--r-ctl);
+  background: var(--brick-soft);
+  color: var(--brick);
+  font-size: 14px;
+}
+
+/* ---------- Lencana dan penanda jenis antrian ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-sunk);
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge--lansia {
+  border-color: #c6d8ff;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.badge--disabilitas {
+  border-color: #d9ccff;
+  background: var(--violet-soft);
+  color: var(--violet);
+}
+
+.badge--vip {
+  border-color: #f2d28a;
+  background: var(--signal-soft);
+  color: #7a4500;
+}
+
+.badge--called {
+  border-color: #f2d28a;
+  background: var(--signal-soft);
+  color: #7a4500;
+}
+
+.badge--done {
+  border-color: #b7e1da;
+  background: var(--teal-soft);
+  color: var(--teal);
+}
+
+.badge--skipped,
+.badge--off {
+  border-color: var(--brick-line);
+  background: var(--brick-soft);
+  color: var(--brick);
+}
+
+/* Ubin huruf seperti papan petunjuk ruang. Warna datang dari --dept. */
+.code-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--dept, #3c4f5c);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  max-width: min(92vw, 420px);
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(18, 32, 43, 0.28);
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast--success {
+  background: var(--teal);
+}
+
+.toast--error {
+  background: var(--brick);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 760px) {
+  .topbar-inner {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding: 10px 16px;
+  }
+
+  .brand {
+    margin-right: auto;
+  }
+
+  .topbar-nav {
+    order: 3;
+    width: 100%;
+    margin-right: 0;
+    overflow-x: auto;
+  }
+
+  .user-text {
+    display: none;
+  }
+
+  .container {
+    padding: 20px 16px 48px;
+  }
+
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,327 @@
+/* Dashboard Admin (index.html). Memakai css/base.css untuk dasar. */
+
+/* ---------- Ringkasan: satu bilah, bukan empat kartu ---------- */
+.statbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 20px;
+  border-left: 1px solid var(--line);
+}
+
+.stat:first-child {
+  border-left: 0;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stat--called .stat-value {
+  color: var(--signal-deep);
+}
+
+.stat--done .stat-value {
+  color: var(--teal);
+}
+
+.stat--skipped .stat-value {
+  color: var(--brick);
+}
+
+/* ---------- Dua kolom ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 5fr) 7fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ---------- Jenis antrian ---------- */
+.type-form {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.type-form .control--code {
+  text-align: center;
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.type-list {
+  margin-top: 16px;
+}
+
+.type-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.type-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.type-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.type-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.type-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.type-row.is-inactive .type-name {
+  color: var(--muted);
+}
+
+.type-row.is-inactive .code-tile {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+/* ---------- Penerbitan tiket ---------- */
+.issue-form {
+  display: grid;
+  grid-template-columns: 1fr 168px auto;
+  gap: 12px;
+  align-items: end;
+}
+
+/* Tiket yang baru terbit, dibuat seperti karcis dengan bagian nomor di kiri. */
+.issued {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  margin-top: 16px;
+  background: var(--dept-soft, var(--surface-sunk));
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--dept, var(--ink));
+  border-radius: 10px;
+}
+
+.issued::before,
+.issued::after {
+  content: "";
+  position: absolute;
+  left: 148px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.issued::before {
+  top: -9px;
+  clip-path: inset(50% 0 0 0);
+}
+
+.issued::after {
+  bottom: -9px;
+  clip-path: inset(0 0 50% 0);
+}
+
+.issued-label {
+  display: grid;
+  place-items: center;
+  width: 156px;
+  padding: 14px 8px;
+  border-right: 2px dashed var(--line-strong);
+  color: var(--dept, var(--ink));
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.issued-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 18px;
+}
+
+.issued-info span {
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.issued.is-new {
+  animation: stub-in 0.35s ease-out;
+}
+
+@keyframes stub-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+/* ---------- Daftar tiket ---------- */
+.list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 24px 0 10px;
+}
+
+.list-head h3 {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.list-head .control {
+  width: auto;
+  height: 34px;
+  font-size: 13px;
+}
+
+.ticket-group + .ticket-group {
+  margin-top: 18px;
+}
+
+.group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.group-head .code-tile {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.group-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.group-count {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ticket-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--dept, var(--ink));
+  border-radius: var(--r-ctl);
+}
+
+.ticket-row + .ticket-row {
+  margin-top: 6px;
+}
+
+.ticket-row.is-called {
+  background: var(--signal-soft);
+}
+
+.ticket-label {
+  min-width: 66px;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ticket-time {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .statbar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat:nth-child(3) {
+    border-left: 0;
+  }
+
+  .stat:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .type-form,
+  .issue-form {
+    grid-template-columns: 1fr;
+  }
+
+  .type-form .field--code {
+    max-width: 96px;
+  }
+
+  .type-row {
+    flex-wrap: wrap;
+  }
+
+  .type-actions {
+    width: 100%;
+  }
+
+  .issued::before,
+  .issued::after {
+    display: none;
+  }
+
+  .issued {
+    flex-direction: column;
+  }
+
+  .issued-label {
+    width: auto;
+    border-right: 0;
+    border-bottom: 2px dashed var(--line-strong);
+  }
+}

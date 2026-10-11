@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id" class="guarding">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Operator - Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/operator.css" />
+  <!-- common.js harus dimuat sebelum operator.js (defer menjaga urutan ini) -->
+  <script src="dist/common.js" defer></script>
+  <script src="dist/operator.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Antrian RS</span>
+      </div>
+
+      <nav class="topbar-nav" aria-label="Halaman">
+        <!-- Tautan Dashboard hanya ditampilkan untuk admin dan moderator -->
+        <a href="index.html" id="dashboard-link" hidden>Dashboard</a>
+        <a href="operator.html" aria-current="page">Operator</a>
+        <a href="ambil-antrian.html">Ambil antrian</a>
+        <a href="layar.html">Layar antrian</a>
+      </nav>
+
+      <div class="user">
+        <span class="avatar" id="user-avatar" aria-hidden="true"></span>
+        <div class="user-text">
+          <span class="user-name" id="user-name"></span>
+          <span class="user-role" id="user-role"></span>
+        </div>
+      </div>
+      <button type="button" class="btn btn--ghost btn--small" id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <div>
+        <h1>Panel Operator</h1>
+        <p class="lede">
+          Panggil tiket sesuai urutan prioritas. Tiket VIP, disabilitas, dan lansia dipanggil lebih dulu daripada tiket normal.
+        </p>
+      </div>
+    </div>
+
+    <div class="lane-grid" id="operator-grid"></div>
+  </main>
+</body>
+</html>
