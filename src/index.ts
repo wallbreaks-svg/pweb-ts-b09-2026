@@ -9,22 +9,50 @@
   Antrian.bindSessionBar(session);
 
   // ---------- Elemen DOM ----------
-  const byId = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
+  const byId = (id: string): HTMLElement => {
+    const node = document.getElementById(id);
+    if (!node) throw new Error(`Elemen #${id} tidak ditemukan`);
+    return node;
+  };
 
-  const typeForm = byId<HTMLFormElement>("type-form");
-  const codeInput = byId<HTMLInputElement>("type-code");
-  const nameInput = byId<HTMLInputElement>("type-name");
+  const formById = (id: string): HTMLFormElement => {
+    const node = byId(id);
+    if (!(node instanceof HTMLFormElement)) throw new Error(`#${id} bukan form`);
+    return node;
+  };
+
+  const inputById = (id: string): HTMLInputElement => {
+    const node = byId(id);
+    if (!(node instanceof HTMLInputElement)) throw new Error(`#${id} bukan input`);
+    return node;
+  };
+
+  const selectById = (id: string): HTMLSelectElement => {
+    const node = byId(id);
+    if (!(node instanceof HTMLSelectElement)) throw new Error(`#${id} bukan select`);
+    return node;
+  };
+
+  const buttonById = (id: string): HTMLButtonElement => {
+    const node = byId(id);
+    if (!(node instanceof HTMLButtonElement)) throw new Error(`#${id} bukan button`);
+    return node;
+  };
+
+  const typeForm = formById("type-form");
+  const codeInput = inputById("type-code");
+  const nameInput = inputById("type-name");
   const typeError = byId("type-error");
   const typeList = byId("type-list");
 
-  const issueForm = byId<HTMLFormElement>("issue-form");
-  const issueType = byId<HTMLSelectElement>("issue-type");
-  const issuePriority = byId<HTMLSelectElement>("issue-priority");
+  const issueForm = formById("issue-form");
+  const issueType = selectById("issue-type");
+  const issuePriority = selectById("issue-priority");
   const issueResult = byId("issue-result");
 
   const ticketGroups = byId("ticket-groups");
-  const ticketFilter = byId<HTMLSelectElement>("ticket-filter");
-  const resetButton = byId<HTMLButtonElement>("reset-btn");
+  const ticketFilter = selectById("ticket-filter");
+  const resetButton = buttonById("reset-btn");
 
   // ---------- Render ----------
   function renderStats(tickets: Antrian.Ticket[]): void {

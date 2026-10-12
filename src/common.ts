@@ -90,13 +90,13 @@ namespace Antrian {
     return { ok: false, error };
   }
 
-  // ---------- Local Storage ----------
-  function readJson<T>(key: string, fallback: T): T {
+  // ---------- Local Storage & Validasi Tipe ----------
+  function readJson(key: string): unknown {
     try {
       const raw = localStorage.getItem(key);
-      return raw === null ? fallback : (JSON.parse(raw) as T);
+      return raw === null ? null : JSON.parse(raw);
     } catch {
-      return fallback;
+      return null;
     }
   }
 
@@ -104,9 +104,41 @@ namespace Antrian {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
+  function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
+  }
+
+  function isStatus(value: unknown): value is TicketStatus {
+    return value === "waiting" || value === "called" || value === "done" || value === "skipped";
+  }
+
+  function isQueueType(value: unknown): value is QueueType {
+    return (
+      isRecord(value) &&
+      typeof value.code === "string" &&
+      typeof value.name === "string" &&
+      typeof value.active === "boolean"
+    );
+  }
+
+  function isTicket(value: unknown): value is Ticket {
+    return (
+      isRecord(value) &&
+      typeof value.id === "string" &&
+      typeof value.typeCode === "string" &&
+      typeof value.number === "number" &&
+      typeof value.label === "string" &&
+      typeof value.priority === "string" &&
+      isPriority(value.priority) &&
+      isStatus(value.status) &&
+      (value.source === "manual" || value.source === "kiosk") &&
+      typeof value.createdAt === "number"
+    );
+  }
+
   export function getTypes(): QueueType[] {
-    const data = readJson<unknown>(KEY_TYPES, []);
-    return Array.isArray(data) ? (data as QueueType[]) : [];
+    const data = readJson(KEY_TYPES);
+    return Array.isArray(data) ? data.filter(isQueueType) : [];
   }
 
   function saveTypes(types: QueueType[]): void {
@@ -114,8 +146,8 @@ namespace Antrian {
   }
 
   export function getTickets(): Ticket[] {
-    const data = readJson<unknown>(KEY_TICKETS, []);
-    return Array.isArray(data) ? (data as Ticket[]) : [];
+    const data = readJson(KEY_TICKETS);
+    return Array.isArray(data) ? data.filter(isTicket) : [];
   }
 
   function saveTickets(tickets: Ticket[]): void {
@@ -123,10 +155,14 @@ namespace Antrian {
   }
 
   function getCounters(): Counters {
-    const data = readJson<unknown>(KEY_COUNTERS, {});
-    return data !== null && typeof data === "object" && !Array.isArray(data)
-      ? (data as Counters)
-      : {};
+    const data = readJson(KEY_COUNTERS);
+    const counters: Counters = {};
+    if (isRecord(data)) {
+      for (const [code, value] of Object.entries(data)) {
+        if (typeof value === "number") counters[code] = value;
+      }
+    }
+    return counters;
   }
 
   function saveCounters(counters: Counters): void {

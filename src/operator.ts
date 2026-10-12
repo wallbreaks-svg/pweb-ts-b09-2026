@@ -8,7 +8,9 @@
   Antrian.ensureSeed();
   Antrian.bindSessionBar(session);
 
-  const grid = document.getElementById("operator-grid") as HTMLElement;
+  const gridElement = document.getElementById("operator-grid");
+  if (!gridElement) throw new Error("Elemen #operator-grid tidak ditemukan");
+  const grid: HTMLElement = gridElement;
 
   // Tautan ke Dashboard hanya untuk admin dan moderator.
   const dashboardLink = document.getElementById("dashboard-link");
