@@ -1,0 +1,24 @@
+/* layar.css - monitor antrian (tema gelap) */
+.screen-page { background: #0b1f2a; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+.screen-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 2rem; background: #0a2a36; border-bottom: 3px solid var(--primary); }
+.screen-header h1 { font-size: 1.7rem; }
+.screen-header p { opacity: .7; font-size: .9rem; }
+.screen-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.clock { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; margin-right: .5rem; }
+.btn--glass { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.35); }
+.btn--glass:hover, .btn--glass.is-active { background: rgba(255,255,255,.28); }
+
+.screen-grid { flex: 1; display: grid; gap: 1.5rem; padding: 1.5rem 2rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-content: start; }
+.screen-card { background: linear-gradient(160deg, #123c4c, #0e2d3a); border: 1px solid #1d5568; border-top: 5px solid var(--dept, var(--primary)); border-radius: 20px; padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: .5rem; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.screen-card-head { display: flex; align-items: center; justify-content: center; gap: .75rem; width: 100%; }
+.screen-card .code-tile { width: 3rem; height: 3rem; font-size: 1.6rem; border-radius: 12px; background: var(--dept, var(--primary)); filter: brightness(1.4); }
+.screen-name { font-size: 1.3rem; }
+.screen-label { margin-top: .75rem; opacity: .7; text-transform: uppercase; letter-spacing: .1em; font-size: .85rem; }
+.screen-number { font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 800; color: #fbbf24; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.screen-number.is-empty { color: #3b5b69; }
+.screen-card-foot { display: flex; justify-content: space-around; width: 100%; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #1d5568; }
+.screen-stat { display: flex; flex-direction: column; }
+.screen-stat strong { font-size: 1.6rem; }
+.screen-stat span { font-size: .8rem; opacity: .7; }
+.screen-empty { grid-column: 1 / -1; text-align: center; color: #9fb8c4; font-size: 1.3rem; padding: 3rem 1rem; }
+@media (max-width: 640px) { .screen-header, .screen-grid { padding-left: 1rem; padding-right: 1rem; } }

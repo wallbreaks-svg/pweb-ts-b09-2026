@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Layar Antrian - Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layar.css" />
+  <!-- common.js harus dimuat sebelum layar.js (defer menjaga urutan ini) -->
+  <script src="dist/common.js" defer></script>
+  <script src="dist/layar.js" defer></script>
+</head>
+<body class="screen-page">
+  <header class="screen-bar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Antrian RS</span>
+    </div>
+
+    <div class="screen-clock" aria-live="off">
+      <span class="clock-time" id="clock-time">--:--:--</span>
+      <span class="clock-date" id="clock-date"></span>
+    </div>
+
+    <div class="screen-tools">
+      <button type="button" class="btn btn--ghost btn--small" id="sound-btn" aria-pressed="false">
+        Suara: mati
+      </button>
+      <button type="button" class="btn btn--ghost btn--small" id="fullscreen-btn" aria-pressed="false">
+        Layar penuh
+      </button>
+    </div>
+  </header>
+
+  <main class="screen-main">
+    <section class="latest" id="latest" aria-live="polite" aria-label="Panggilan terbaru">
+      <span class="latest-label">Panggilan terbaru</span>
+      <strong class="latest-number is-empty" id="latest-number">-</strong>
+      <span class="latest-name" id="latest-name">Belum ada nomor yang dipanggil</span>
+    </section>
+
+    <section class="screen-grid" id="screen-grid" aria-label="Status antrian per layanan"></section>
+  </main>
+
+  <footer class="screen-foot">
+    <span>Data diperbarui otomatis setiap beberapa detik.</span>
+    <nav aria-label="Tautan">
+      <a href="ambil-antrian.html">Ambil nomor antrian</a>
+      <a href="login.html">Login petugas</a>
+    </nav>
+  </footer>
+</body>
+</html>

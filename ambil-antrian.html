@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambil Antrian - Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/ambil-antrian.css" />
+  <!-- common.js harus dimuat sebelum ambil-antrian.js (defer menjaga urutan ini) -->
+  <script src="dist/common.js" defer></script>
+  <script src="dist/ambil-antrian.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Antrian RS</span>
+      </div>
+
+      <nav class="topbar-nav" aria-label="Halaman">
+        <a href="ambil-antrian.html" aria-current="page">Ambil antrian</a>
+        <a href="layar.html">Layar antrian</a>
+      </nav>
+
+      <a class="btn btn--ghost btn--small" href="login.html">Login petugas</a>
+    </div>
+  </header>
+
+  <main class="container container--narrow">
+    <div class="page-head">
+      <div>
+        <h1>Ambil Nomor Antrian</h1>
+        <p class="lede">Pilih layanan dan tingkat prioritas, lalu ambil nomor. Tiket langsung masuk antrian.</p>
+      </div>
+    </div>
+
+    <!-- Langkah 1 dan 2: form pengambilan tiket -->
+    <section class="panel" id="take-panel" aria-labelledby="take-title">
+      <h2 class="panel-title" id="take-title">Pilih layanan</h2>
+
+      <form class="take-form" id="take-form" novalidate>
+        <fieldset class="choice-group">
+          <legend>1. Jenis antrian</legend>
+          <div class="choice-list" id="type-options"></div>
+        </fieldset>
+
+        <fieldset class="choice-group">
+          <legend>2. Tingkat prioritas</legend>
+          <div class="choice-list choice-list--priority" id="priority-options"></div>
+        </fieldset>
+
+        <p class="form-error" id="take-error" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn--primary btn--large" id="take-btn">Ambil Nomor</button>
+      </form>
+    </section>
+
+    <!-- Hasil: tiket yang baru diambil, status diperbarui otomatis -->
+    <section class="panel ticket-panel" id="ticket-panel" aria-labelledby="ticket-title" hidden>
+      <h2 class="panel-title" id="ticket-title">Tiket Anda</h2>
+
+      <div class="ticket-card" id="ticket-card" role="status" aria-live="polite"></div>
+
+      <div class="ticket-actions">
+        <button type="button" class="btn" id="print-btn">Cetak tiket</button>
+        <button type="button" class="btn btn--primary" id="again-btn">Ambil nomor lagi</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

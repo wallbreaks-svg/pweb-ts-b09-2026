@@ -1,0 +1,34 @@
+/* ambil-antrian.css */
+.step-title { margin-top: 1.6rem; }
+.type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .85rem; }
+.type-card { font: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: .15rem; background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 1rem; color: var(--text); transition: border-color .15s, background .15s, transform .1s; }
+.type-card:hover { border-color: var(--dept, var(--primary)); transform: translateY(-2px); }
+.type-card.is-selected { border-color: var(--dept, var(--primary)); background: var(--dept-soft, var(--primary-soft)); box-shadow: 0 0 0 3px rgba(13,122,138,.18); }
+.type-card .code-tile { width: 2.8rem; height: 2.8rem; font-size: 1.5rem; margin-bottom: .25rem; }
+.type-card-name { font-weight: 600; }
+.type-wait { color: var(--muted); }
+.type-grid .empty { grid-column: 1 / -1; }
+
+.chip-group { display: flex; flex-wrap: wrap; gap: .6rem; }
+.chip { position: relative; cursor: pointer; }
+.chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.chip span { display: inline-block; padding: .5rem 1.1rem; border-radius: 999px; border: 2px solid var(--border); background: #fff; font-weight: 600; transition: all .15s; }
+.chip:hover span { border-color: var(--primary); }
+.chip input:checked + span { background: var(--primary); border-color: var(--primary); color: #fff; }
+.chip input:focus-visible + span { box-shadow: 0 0 0 3px rgba(13,122,138,.35); }
+
+.ticket-card { margin-top: 1.25rem; text-align: center; background: #fff; border: 2px dashed var(--dept, var(--primary)); border-radius: var(--radius); padding: 2rem 1.5rem; box-shadow: var(--shadow); }
+.ticket-card.is-new { animation: pop .35s ease; }
+.ticket-caption { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: .85rem; }
+.ticket-big { font-size: clamp(3rem, 14vw, 5rem); font-weight: 800; color: var(--dept, var(--primary)); line-height: 1.1; margin: .25rem 0; }
+.ticket-service { font-size: 1.15rem; font-weight: 600; margin-bottom: .5rem; }
+.ticket-note { color: var(--muted); font-size: .9rem; margin-top: .25rem; }
+.ticket-card .btn { margin-top: 1rem; }
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+@media print {
+  .topbar, .panel { display: none !important; }
+  body { background: #fff; }
+  .ticket-card { box-shadow: none; border: 2px solid #000; max-width: 320px; margin: 0 auto; }
+  .ticket-card .btn, .toast { display: none; }
+}
