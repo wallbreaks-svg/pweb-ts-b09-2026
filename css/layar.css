@@ -1,24 +1,99 @@
-/* layar.css - monitor antrian (tema gelap) */
-.screen-page { background: #0b1f2a; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
-.screen-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 2rem; background: #0a2a36; border-bottom: 3px solid var(--primary); }
-.screen-header h1 { font-size: 1.7rem; }
-.screen-header p { opacity: .7; font-size: .9rem; }
-.screen-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
-.clock { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; margin-right: .5rem; }
-.btn--glass { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.35); }
-.btn--glass:hover, .btn--glass.is-active { background: rgba(255,255,255,.28); }
+@import url("theme.css");
+/* layar.css - monitor antrian ruang tunggu (tema karcis pop) */
+.screen-page { display: flex; flex-direction: column; min-height: 100vh; }
 
-.screen-grid { flex: 1; display: grid; gap: 1.5rem; padding: 1.5rem 2rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-content: start; }
-.screen-card { background: linear-gradient(160deg, #123c4c, #0e2d3a); border: 1px solid #1d5568; border-top: 5px solid var(--dept, var(--primary)); border-radius: 20px; padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: .5rem; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
-.screen-card-head { display: flex; align-items: center; justify-content: center; gap: .75rem; width: 100%; }
-.screen-card .code-tile { width: 3rem; height: 3rem; font-size: 1.6rem; border-radius: 12px; background: var(--dept, var(--primary)); filter: brightness(1.4); }
-.screen-name { font-size: 1.3rem; }
-.screen-label { margin-top: .75rem; opacity: .7; text-transform: uppercase; letter-spacing: .1em; font-size: .85rem; }
-.screen-number { font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 800; color: #fbbf24; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.screen-number.is-empty { color: #3b5b69; }
-.screen-card-foot { display: flex; justify-content: space-around; width: 100%; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #1d5568; }
-.screen-stat { display: flex; flex-direction: column; }
-.screen-stat strong { font-size: 1.6rem; }
-.screen-stat span { font-size: .8rem; opacity: .7; }
-.screen-empty { grid-column: 1 / -1; text-align: center; color: #9fb8c4; font-size: 1.3rem; padding: 3rem 1rem; }
-@media (max-width: 640px) { .screen-header, .screen-grid { padding-left: 1rem; padding-right: 1rem; } }
+.screen-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+  margin: 1.25rem 2rem 0; padding: .6rem .8rem .6rem 1.2rem;
+  background: var(--white); border: var(--line); border-radius: 999px; box-shadow: var(--pop-sm);
+}
+.screen-clock { display: flex; align-items: baseline; gap: .9rem; flex-wrap: wrap; }
+.clock-time { font-size: 1.9rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.clock-date { color: var(--ink-soft); font-weight: 700; }
+.screen-tools { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.screen-tools .btn--ghost { color: var(--ink); background: var(--white); border-color: var(--ink); box-shadow: var(--pop-sm); }
+.screen-tools .btn--ghost:hover { background: var(--sky-soft); box-shadow: 4px 4px 0 var(--ink); transform: translate(-1px, -1px); }
+.screen-tools .btn[aria-pressed="true"] { background: var(--sun); }
+
+.screen-main { flex: 1; display: flex; flex-direction: column; gap: 2rem; padding: 2rem; }
+
+/* ---------- panggilan terbaru: karcis besar ---------- */
+.latest {
+  position: relative; display: grid; justify-items: center; gap: .1rem;
+  padding: 1.4rem 1.5rem 1.8rem; text-align: center; color: #fff;
+  background: var(--blue); border: var(--line); border-radius: 36px; box-shadow: 8px 8px 0 var(--ink);
+  transform: rotate(-.7deg);
+}
+.latest-label {
+  padding: .3rem 1.3rem; font-size: 1.05rem; font-weight: 800; color: var(--ink);
+  background: var(--sun); border: var(--line); border-radius: 999px; box-shadow: var(--pop-sm);
+}
+.latest-number {
+  max-width: 100%; white-space: nowrap; padding: .05em .2em;
+  font-size: clamp(4.5rem, 15vw, 11rem); font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums; color: #fff; letter-spacing: .01em;
+  -webkit-text-stroke: .045em var(--ink); paint-order: stroke fill;
+  text-shadow: .045em .055em 0 var(--ink);
+}
+.latest-number.is-empty { color: rgba(255, 255, 255, .6); text-shadow: none; -webkit-text-stroke: 0; }
+.latest-number.is-fresh { animation: slam .6s cubic-bezier(.3, 1.6, .5, 1); }
+.latest-name { font-size: clamp(1.2rem, 2.4vw, 1.7rem); font-weight: 800; }
+
+/* ---------- kartu per layanan ---------- */
+.screen-grid { display: grid; gap: 2rem 1.75rem; align-content: start; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.screen-grid .empty { grid-column: 1 / -1; padding: 3rem 1rem; font-size: 1.4rem; background: #fff; border: var(--line); border-radius: 24px; box-shadow: var(--pop); }
+
+.screen-card {
+  position: relative; container-type: inline-size; display: flex; flex-direction: column; align-items: center;
+  background: var(--white); border: var(--line); border-radius: 26px; box-shadow: var(--pop); overflow: hidden;
+  transition: transform .2s;
+}
+.screen-card:nth-child(odd) { transform: rotate(-.5deg); }
+.screen-card:nth-child(even) { transform: rotate(.5deg); }
+.screen-card.is-live { box-shadow: 5px 5px 0 var(--ink), 0 0 0 6px var(--sun); }
+
+.card-head {
+  position: relative; display: flex; align-items: center; gap: .75rem; width: 100%;
+  padding: .8rem 1.1rem; background: var(--dept, var(--blue)); border-bottom: var(--line); color: #fff;
+}
+.card-head .code-tile { width: 2.8rem; height: 2.8rem; font-size: 1.5rem; background: #fff; color: var(--ink); }
+.card-title { margin: 0; font-size: 1.3rem; text-shadow: 0 2px 0 rgba(13, 42, 99, .35); }
+/* titik berkedip penanda ada nomor yang sedang dipanggil */
+.screen-card.is-live .card-head::after {
+  content: ""; margin-left: auto; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--sun); border: 3px solid var(--ink); animation: blink 1.2s ease-in-out infinite;
+}
+
+.card-body { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 1rem 1rem .5rem; }
+.card-label { color: var(--ink-soft); font-weight: 800; font-size: 1rem; }
+.card-number {
+  max-width: 100%; white-space: nowrap; font-size: clamp(2.8rem, 27cqi, 6rem); font-weight: 800; line-height: 1.15;
+  letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); padding-inline: .1em;
+}
+.card-number.is-empty { color: #b9cde8; }
+.card-number.is-fresh { animation: slam .6s cubic-bezier(.3, 1.6, .5, 1); }
+
+.card-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; width: 100%;
+  margin-top: .6rem; padding: .85rem 1.1rem; border-top: 3px dashed rgba(13, 42, 99, .3); font-weight: 700; color: var(--ink-soft);
+}
+.card-remaining strong { font-size: 1.4rem; color: var(--ink); }
+.card-next { padding: .15rem .75rem; font-size: .92rem; color: var(--ink); background: var(--sky-soft); border: 3px solid var(--ink); border-radius: 999px; }
+
+.screen-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: 0 2rem 1.5rem; color: var(--ink); font-weight: 700; font-size: .95rem;
+}
+.screen-foot nav { display: flex; gap: 1.25rem; }
+
+@keyframes slam {
+  0% { transform: scale(1.5) rotate(-4deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes blink { 50% { transform: scale(.6); opacity: .5; } }
+
+@media (max-width: 640px) {
+  .screen-bar { margin: 1rem 1rem 0; border-radius: 28px; }
+  .screen-main { padding: 1.25rem 1rem; }
+  .screen-foot { padding: 0 1rem 1.25rem; }
+}

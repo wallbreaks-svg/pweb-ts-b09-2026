@@ -77,17 +77,82 @@
     }
   }
 
+  // Angka dibaca per digit dalam bahasa Indonesia, supaya jelas didengar.
+  const DIGIT: Record<string, string> = {
+    "0": "nol",
+    "1": "satu",
+    "2": "dua",
+    "3": "tiga",
+    "4": "empat",
+    "5": "lima",
+    "6": "enam",
+    "7": "tujuh",
+    "8": "delapan",
+    "9": "sembilan",
+  };
+
+  function spellNumber(n: number | string): string {
+    return String(n)
+      .padStart(3, "0")
+      .split("")
+      .map((d) => DIGIT[d] ?? d)
+      .join(", ");
+  }
+
+  // Daftar voice dimuat async di Chrome/Edge, jadi ditunggu lewat `voiceschanged`.
+  let voices: SpeechSynthesisVoice[] = [];
+  if ("speechSynthesis" in window) {
+    voices = window.speechSynthesis.getVoices();
+    window.speechSynthesis.addEventListener("voiceschanged", () => {
+      voices = window.speechSynthesis.getVoices();
+    });
+  }
+
+  function pickVoice(): SpeechSynthesisVoice | undefined {
+    return (
+      voices.find((v) => v.lang === "id-ID") ??
+      voices.find((v) => v.lang.toLowerCase().startsWith("id")) ??
+      voices.find((v) => v.lang.toLowerCase().startsWith("ms")) // Melayu, mirip Indonesia
+    );
+  }
+
+  // Simpan referensi utterance agar tidak dibuang garbage collector sebelum selesai dibaca.
+  let currentUtterance: SpeechSynthesisUtterance | null = null;
+
   function announce(ticket: Antrian.Ticket, typeName: string): void {
     if (!soundOn) return;
     chime();
     if (!("speechSynthesis" in window)) return;
 
-    const text = `Nomor antrian ${ticket.typeCode} ${ticket.number}, silakan menuju ${typeName}.`;
+    // Browser memblokir suara bicara jika halaman belum pernah diklik sejak dimuat.
+    if (navigator.userActivation && !navigator.userActivation.hasBeenActive) {
+      Antrian.toast("Klik di halaman sekali agar suara panggilan bisa keluar.", "error");
+    }
+
+    // Contoh hasil: "Nomor antrian, U, nol, nol, satu. Silakan menuju Poli Umum."
+    const text =
+      `Nomor antrian, ${ticket.typeCode}, ${spellNumber(ticket.number)}. ` +
+      `Silakan menuju ${typeName}.`;
+
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "id-ID";
-    utterance.rate = 0.9;
-    // Beri jeda supaya nada selesai dulu. Utterance antre otomatis jika ada beberapa.
-    window.setTimeout(() => window.speechSynthesis.speak(utterance), 600);
+    const voice = pickVoice();
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+    } else {
+      utterance.lang = "id-ID";
+    }
+    utterance.rate = 0.85;
+    utterance.onend = () => {
+      if (currentUtterance === utterance) currentUtterance = null;
+    };
+    currentUtterance = utterance;
+
+    // Beri jeda supaya nada selesai dulu.
+    window.setTimeout(() => {
+      window.speechSynthesis.resume(); // jaga-jaga jika engine dalam keadaan pause
+      window.speechSynthesis.speak(utterance);
+    }, 600);
   }
 
   soundButton.addEventListener("click", () => {

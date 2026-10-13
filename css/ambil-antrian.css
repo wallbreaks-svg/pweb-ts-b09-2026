@@ -1,34 +1,108 @@
-/* ambil-antrian.css */
-.step-title { margin-top: 1.6rem; }
-.type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .85rem; }
-.type-card { font: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: .15rem; background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 1rem; color: var(--text); transition: border-color .15s, background .15s, transform .1s; }
-.type-card:hover { border-color: var(--dept, var(--primary)); transform: translateY(-2px); }
-.type-card.is-selected { border-color: var(--dept, var(--primary)); background: var(--dept-soft, var(--primary-soft)); box-shadow: 0 0 0 3px rgba(13,122,138,.18); }
-.type-card .code-tile { width: 2.8rem; height: 2.8rem; font-size: 1.5rem; margin-bottom: .25rem; }
-.type-card-name { font-weight: 600; }
-.type-wait { color: var(--muted); }
-.type-grid .empty { grid-column: 1 / -1; }
+@import url("theme.css");
+/* ambil-antrian.css - halaman ambil nomor (tema karcis pop) */
 
-.chip-group { display: flex; flex-wrap: wrap; gap: .6rem; }
-.chip { position: relative; cursor: pointer; }
-.chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.chip span { display: inline-block; padding: .5rem 1.1rem; border-radius: 999px; border: 2px solid var(--border); background: #fff; font-weight: 600; transition: all .15s; }
-.chip:hover span { border-color: var(--primary); }
-.chip input:checked + span { background: var(--primary); border-color: var(--primary); color: #fff; }
-.chip input:focus-visible + span { box-shadow: 0 0 0 3px rgba(13,122,138,.35); }
+/* ---------- pilihan ---------- */
+.choice-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+.choice-list--priority { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.choice-list .empty { grid-column: 1 / -1; }
 
-.ticket-card { margin-top: 1.25rem; text-align: center; background: #fff; border: 2px dashed var(--dept, var(--primary)); border-radius: var(--radius); padding: 2rem 1.5rem; box-shadow: var(--shadow); }
-.ticket-card.is-new { animation: pop .35s ease; }
-.ticket-caption { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: .85rem; }
-.ticket-big { font-size: clamp(3rem, 14vw, 5rem); font-weight: 800; color: var(--dept, var(--primary)); line-height: 1.1; margin: .25rem 0; }
-.ticket-service { font-size: 1.15rem; font-weight: 600; margin-bottom: .5rem; }
-.ticket-note { color: var(--muted); font-size: .9rem; margin-top: .25rem; }
-.ticket-card .btn { margin-top: 1rem; }
-@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.choice { position: relative; display: block; cursor: pointer; }
+.choice-input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.choice-body {
+  position: relative; display: flex; align-items: center; gap: .85rem; height: 100%;
+  padding: .9rem 1rem; background: var(--white);
+  border: var(--line); border-radius: 18px; box-shadow: var(--pop-sm);
+  transition: transform .1s, box-shadow .1s, background .15s;
+}
+.choice:hover .choice-body { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.choice:active .choice-body { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+.choice-input:checked + .choice-body { background: var(--dept-soft, var(--sky-soft)); box-shadow: 0 0 0 var(--ink); transform: translate(3px, 3px); }
+.choice-input:checked + .choice-body::after {
+  content: ""; position: absolute; top: -13px; right: -10px; width: 1.9rem; height: 1.9rem;
+  background: var(--sun) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%230d2a63' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
+  border: var(--line); border-radius: 50%; box-shadow: 2px 2px 0 var(--ink);
+}
+.choice-input:focus-visible + .choice-body { outline: 4px solid var(--sun); outline-offset: 3px; }
+.choice-body .code-tile { flex: none; width: 3rem; height: 3rem; font-size: 1.5rem; }
+.choice-text { display: flex; flex-direction: column; min-width: 0; }
+.choice-title { font-weight: 800; font-size: 1.05rem; }
+.choice-meta { color: var(--ink-soft); font-weight: 700; font-size: .9rem; }
+
+/* ---------- karcis ---------- */
+.ticket-card {
+  --stub: var(--dept, var(--blue));
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  text-align: center; padding: 3.6rem 1.5rem 1.6rem; margin-top: .6rem;
+  background: var(--white); border: var(--line); border-radius: 26px; box-shadow: var(--pop);
+  transform: rotate(-1deg);
+  animation: stick .5s cubic-bezier(.3, 1.5, .5, 1);
+}
+/* pita warna layanan di atas karcis */
+.ticket-card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2.6rem;
+  background: var(--stub); border-bottom: var(--line); border-radius: 22px 22px 0 0;
+}
+/* garis sobekan */
+.ticket-card::after {
+  content: ""; position: absolute; left: 1rem; right: 1rem; top: 2.6rem; margin-top: 3px; border-top: 3px dashed var(--ink); opacity: .25;
+}
+.ticket-caption {
+  position: absolute; top: .45rem; left: 0; right: 0; z-index: 1;
+  color: #fff; font-weight: 800; font-size: 1.05rem; text-shadow: 0 2px 0 rgba(13, 42, 99, .35);
+}
+.ticket-number {
+  max-width: 100%; white-space: nowrap; font-size: clamp(3.4rem, 17vw, 6.4rem); font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums; letter-spacing: .01em; color: var(--ink);
+  text-shadow: .05em .05em 0 var(--sun);
+  padding: .1em .15em;
+}
+.ticket-meta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem .75rem; }
+.ticket-service { font-size: 1.2rem; font-weight: 800; }
+.ticket-time { color: var(--ink-soft); font-weight: 700; font-size: .95rem; }
+.ticket-status {
+  margin: .9rem 0 0; padding: .55rem 1.2rem; font-size: 1.05rem; font-weight: 800;
+  background: var(--sky-soft); border: var(--line); border-radius: 999px; box-shadow: var(--pop-sm);
+}
+.ticket-eta {
+  display: flex; flex-direction: column; align-items: center; margin: .8rem 0 0; padding: .5rem 1.5rem;
+  background: var(--sun); border: var(--line); border-radius: 18px; box-shadow: var(--pop-sm); transform: rotate(1deg);
+}
+.ticket-eta-label { font-size: .85rem; font-weight: 800; }
+.ticket-eta-value { font-size: 1.5rem; font-weight: 800; line-height: 1.2; }
+.ticket-note { margin: .6rem 0 0; color: var(--ink-soft); font-size: .92rem; font-weight: 700; }
+.ticket-actions { display: flex; flex-wrap: wrap; gap: .9rem; justify-content: center; margin-top: 1.75rem; }
+
+.ticket-card--called { animation: stick .5s cubic-bezier(.3, 1.5, .5, 1), wiggle 1.4s ease-in-out .6s infinite; }
+.ticket-card--called .ticket-status { background: var(--sun); }
+.ticket-card--done .ticket-status { background: #c9f5e8; }
+.ticket-card--skipped .ticket-status { background: #ffd9d9; }
+
+/* badge prioritas */
+.badge { display: inline-flex; align-items: center; height: auto; min-height: 1.7rem; padding: .1rem .75rem; font-size: .85rem; font-weight: 800; color: var(--ink); background: var(--sky-soft); border: 3px solid var(--ink); border-radius: 999px; }
+.badge--lansia { background: #c9f5e8; border-color: var(--ink); color: var(--ink); }
+.badge--disabilitas { background: #ffd9ec; border-color: var(--ink); color: var(--ink); }
+.badge--vip { background: var(--sun); border-color: var(--ink); color: var(--ink); }
+
+@keyframes stick {
+  from { transform: rotate(-6deg) scale(.8); opacity: 0; }
+  to { transform: rotate(-1deg) scale(1); opacity: 1; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+
+@media (max-width: 520px) {
+  .panel { padding: 1.15rem; }
+  .choice-list, .choice-list--priority { grid-template-columns: 1fr; }
+}
 
 @media print {
-  .topbar, .panel { display: none !important; }
+  .topbar, .panel:not(.ticket-panel), .ticket-actions, .toast { display: none !important; }
   body { background: #fff; }
-  .ticket-card { box-shadow: none; border: 2px solid #000; max-width: 320px; margin: 0 auto; }
-  .ticket-card .btn, .toast { display: none; }
+  .ticket-panel { border: 0; box-shadow: none; padding: 0; }
+  .ticket-card { transform: none; animation: none; box-shadow: none; max-width: 320px; margin: 0 auto; }
+  .ticket-card::before { background: #000; }
+  .ticket-number { color: #000; text-shadow: none; }
+  .ticket-caption { text-shadow: none; }
 }

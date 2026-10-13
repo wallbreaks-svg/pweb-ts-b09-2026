@@ -5,6 +5,9 @@
 
   // Interval polling (ms), sebagai cadangan event `storage` dari tab lain.
   const POLL_MS = 2500;
+  // Perkiraan: operator memanggil 1 tiket setiap 1 menit. Ubah angka ini jika
+  // kecepatan layanan berubah.
+  const CALL_INTERVAL_MIN = 1;
   // Id tiket terakhir yang diambil di tab ini (sessionStorage), supaya kartu
   // tiket tidak hilang saat halaman di-refresh.
   const KEY_LAST_TICKET = "lastTicketId";
@@ -50,6 +53,28 @@
     } catch {
       return null;
     }
+  }
+
+  // ---------- Perkiraan waktu tunggu ----------
+  // Dengan `ahead` tiket di depan, nomor ini dipanggil pada panggilan ke-(ahead + 1).
+  function estimateMinutes(ahead: number): number {
+    return (Math.max(0, ahead) + 1) * CALL_INTERVAL_MIN;
+  }
+
+  function formatMinutes(total: number): string {
+    if (total < 60) return `${total} menit`;
+    const hours = Math.floor(total / 60);
+    const minutes = total % 60;
+    return minutes === 0 ? `${hours} jam` : `${hours} jam ${minutes} menit`;
+  }
+
+  function buildEta(estimate: string): HTMLElement {
+    const box = Antrian.el("p", "ticket-eta");
+    box.append(
+      Antrian.el("span", "ticket-eta-label", "Perkiraan dipanggil"),
+      Antrian.el("strong", "ticket-eta-value", `sekitar ${estimate} lagi`),
+    );
+    return box;
   }
 
   // ---------- Pesan kesalahan ----------
@@ -112,7 +137,11 @@
       const text = Antrian.el("span", "choice-text");
       text.append(
         Antrian.el("span", "choice-title", type.name),
-        Antrian.el("span", "choice-meta", `${waiting} menunggu`),
+        Antrian.el(
+          "span",
+          "choice-meta",
+          `${waiting} menunggu, sekitar ${formatMinutes(estimateMinutes(waiting))}`,
+        ),
       );
       body.append(Antrian.el("span", "code-tile", type.code), text);
 
@@ -157,7 +186,7 @@
   }
 
   // Teks status yang diperbarui otomatis mengikuti kondisi antrian.
-  function describeStatus(ticket: Antrian.Ticket): { text: string; tone: string } {
+  function describeStatus(ticket: Antrian.Ticket): { text: string; tone: string; eta?: string } {
     const tickets = Antrian.getTickets();
 
     if (ticket.status === "called") {
@@ -172,7 +201,11 @@
     const calling = Antrian.currentFor(ticket.typeCode, tickets);
     const aheadText = ahead <= 0 ? "Anda berikutnya." : `${ahead} antrian di depan Anda.`;
     const callingText = calling ? ` Sedang dipanggil: ${calling.label}.` : "";
-    return { text: `${aheadText}${callingText}`, tone: "waiting" };
+    return {
+      text: `${aheadText}${callingText}`,
+      tone: "waiting",
+      eta: formatMinutes(estimateMinutes(ahead)),
+    };
   }
 
   function renderTicket(): void {
@@ -211,6 +244,9 @@
       Antrian.el("strong", "ticket-number", ticket.label),
       meta,
       Antrian.el("p", "ticket-status", status.text),
+    );
+    if (status.eta) ticketCard.append(buildEta(status.eta));
+    ticketCard.append(
       Antrian.el("p", "ticket-note", "Pantau layar antrian. Halaman ini diperbarui otomatis."),
     );
 
